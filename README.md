@@ -1,4 +1,4 @@
-# Dpring-boot & H2
+# Spring-boot & H2
 
 Ejemplo sencillo de servicio rest montado con spring-boot & h2 como BBDD.
 
