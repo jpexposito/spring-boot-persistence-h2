@@ -14,11 +14,11 @@ import org.springframework.web.client.RestTemplate;
 
 public class SpringRestClient {
 
-	private static final String GET_users_ENDPOINT_URL = "http://localhost:8080/api/v1/users";
-	private static final String GET_User_ENDPOINT_URL = "http://localhost:8080/api/v1/users/{id}";
-	private static final String CREATE_User_ENDPOINT_URL = "http://localhost:8080/api/v1/users";
-	private static final String UPDATE_User_ENDPOINT_URL = "http://localhost:8080/api/v1/users/{id}";
-	private static final String DELETE_User_ENDPOINT_URL = "http://localhost:8080/api/v1/users/{id}";
+	private static final String GET_users_ENDPOINT_URL = "http://localhost:8080/api/v1/user";
+	private static final String GET_User_ENDPOINT_URL = "http://localhost:8080/api/v1/user/{id}";
+	private static final String CREATE_User_ENDPOINT_URL = "http://localhost:8080/api/v1/user";
+	private static final String UPDATE_User_ENDPOINT_URL = "http://localhost:8080/api/v1/user/{id}";
+	private static final String DELETE_User_ENDPOINT_URL = "http://localhost:8080/api/v1/user/{id}";
 	private static RestTemplate restTemplate = new RestTemplate();
 
 	public static void main(String[] args) {

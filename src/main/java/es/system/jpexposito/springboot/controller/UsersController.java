@@ -41,7 +41,7 @@ public class UsersController {
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 404, message = "Not find") })
-	@GetMapping("/users/{id}")
+	@GetMapping("/user/{id}")
 	public ResponseEntity<User> getUserById(@PathVariable(value = "id") Long UserId)
 			throws ResourceNotFoundException {
 		User user = userRepository.findById(UserId)
@@ -53,7 +53,7 @@ public class UsersController {
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 400, message = "Bad Request. Problem ") })
-	@PostMapping("/user")
+	@PostMapping("/add")
 	public User createUser(@Valid @RequestBody User user) {
 		return userRepository.save(user);
 	}
@@ -62,7 +62,7 @@ public class UsersController {
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 404, message = "Not find") })
-	@PutMapping("/user/{id}")
+	@PutMapping("/update/{id}")
 	public ResponseEntity<User> updateUser(@PathVariable(value = "id") Long UserId,
 											   @Valid @RequestBody User userDetails) throws ResourceNotFoundException {
 		User user = userRepository.findById(UserId)
@@ -77,7 +77,7 @@ public class UsersController {
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "OK"),
 			@ApiResponse(code = 404, message = "Not find") })
-	@DeleteMapping("/user/{id}")
+	@DeleteMapping("/delete/{id}")
 	public Map<String, Boolean> deleteUser(@PathVariable(value = "id") Long UserId)
 			throws ResourceNotFoundException {
 		User user = userRepository.findById(UserId)

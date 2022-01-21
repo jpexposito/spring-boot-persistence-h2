@@ -42,7 +42,7 @@ public class UsersControllerIntegrationTest {
 		HttpHeaders headers = new HttpHeaders();
 		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 
-		ResponseEntity<String> response = restTemplate.exchange(getRootUrl() + "/users",
+		ResponseEntity<String> response = restTemplate.exchange(getRootUrl() + "/user",
 				HttpMethod.GET, entity, String.class);
 		
 		assertNotNull(response.getBody());
@@ -50,7 +50,7 @@ public class UsersControllerIntegrationTest {
 
 	@Test
 	public void testGetUserById() {
-		User user = restTemplate.getForObject(getRootUrl() + "/users/1", User.class);
+		User user = restTemplate.getForObject(getRootUrl() + "/user/1", User.class);
 		System.out.println(user.getName());
 		assertNotNull(user);
 	}
@@ -60,7 +60,7 @@ public class UsersControllerIntegrationTest {
 		User user = new User();
 		user.setName("admin");
 
-		ResponseEntity<User> postResponse = restTemplate.postForEntity(getRootUrl() + "/users", user, User.class);
+		ResponseEntity<User> postResponse = restTemplate.postForEntity(getRootUrl() + "/add", user, User.class);
 		assertNotNull(postResponse);
 		assertNotNull(postResponse.getBody());
 	}
@@ -68,25 +68,25 @@ public class UsersControllerIntegrationTest {
 	@Test
 	public void testUpdateUser() {
 		int id = 1;
-		User user = restTemplate.getForObject(getRootUrl() + "/users/" + id, User.class);
+		User user = restTemplate.getForObject(getRootUrl() + "/add/" + id, User.class);
 		user.setName("admin1");
 
-		restTemplate.put(getRootUrl() + "/users/" + id, user);
+		restTemplate.put(getRootUrl() + "/update/" + id, user);
 
-		User updatedUser = restTemplate.getForObject(getRootUrl() + "/users/" + id, User.class);
+		User updatedUser = restTemplate.getForObject(getRootUrl() + "/user/" + id, User.class);
 		assertNotNull(updatedUser);
 	}
 
 	@Test
 	public void testDeleteUser() {
 		int id = 2;
-		User user = restTemplate.getForObject(getRootUrl() + "/users/" + id, User.class);
+		User user = restTemplate.getForObject(getRootUrl() + "/user/" + id, User.class);
 		assertNotNull(user);
 
-		restTemplate.delete(getRootUrl() + "/users/" + id);
+		restTemplate.delete(getRootUrl() + "/delete/" + id);
 
 		try {
-			user = restTemplate.getForObject(getRootUrl() + "/users/" + id, User.class);
+			user = restTemplate.getForObject(getRootUrl() + "/user/" + id, User.class);
 		} catch (final HttpClientErrorException e) {
 			assertEquals(e.getStatusCode(), HttpStatus.NOT_FOUND);
 		}
