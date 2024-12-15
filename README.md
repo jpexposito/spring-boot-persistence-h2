@@ -29,6 +29,6 @@ mvn clean spring-boot:run
 
 - **URL**: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
-> En el siguiente [enlace](https://github.com/jpexposito/code-learn/tree/main/segundo/pgv/5-red-servicos) se encuentra la documentación de creación y documentación de servicios en [Spring](https://spring.io/).
+> En el siguiente [enlace](https://github.com/jpexposito/code-learn/tree/main/segundo/pgv/5-red-servicos) se encuentra la documentación de creación y documentación de servicios en [Spring](https://spring.io/). El cliente para el consumo del servicio de forma programática se encuentra en el siguiente [enlace](https://github.com/jpexposito/spring-boot-persistence-h2-client).
 
 </div>
