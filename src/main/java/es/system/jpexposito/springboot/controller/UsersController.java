@@ -9,6 +9,8 @@ import jakarta.validation.Valid;
 import es.system.jpexposito.springboot.exception.ResourceNotFoundException;
 import es.system.jpexposito.springboot.model.User;
 import es.system.jpexposito.springboot.repository.UserRepository;
+import es.system.jpexposito.springboot.service.UserService;
+import es.system.jpexposito.springboot.service.UserServiceInterface;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -27,18 +29,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class UsersController {
 
-    private UserRepository userRepository;
+    private UserServiceInterface userService;
 
     @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public void setUserRepository(UserServiceInterface userService) {
+        this.userService = userService;
     }
 
 
     @Operation(summary = "Get all users")
     @GetMapping("/users/")
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userService.getAllUsers();
     }
 
     @Operation(summary = "Get user by ID")
@@ -47,9 +49,8 @@ public class UsersController {
             @ApiResponse(responseCode = "404", description = "User not found")
     })
     @GetMapping("/user/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable(value = "id") Long userId) throws ResourceNotFoundException {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + userId));
+    public ResponseEntity<User> getUserById(@PathVariable(value = "id") int userId) throws ResourceNotFoundException {
+        User user = userService.getUserById(userId);
         return ResponseEntity.ok().body(user);
     }
 
@@ -60,7 +61,7 @@ public class UsersController {
     })
     @PostMapping("/add/user/")
     public User createUser(@Valid @RequestBody User user) {
-        return userRepository.save(user);
+        return userService.createUser(user);
     }
 
     @Operation(summary = "Update user")
@@ -69,13 +70,9 @@ public class UsersController {
             @ApiResponse(responseCode = "404", description = "User not found")
     })
     @PutMapping("/update/user/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable(value = "id") Long userId,
+    public ResponseEntity<User> updateUser(@PathVariable(value = "id") int userId,
                                            @Valid @RequestBody User userDetails) throws ResourceNotFoundException {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + userId));
-
-        user.setName(userDetails.getName());
-        final User updatedUser = userRepository.save(user);
+        final User updatedUser = userService.updateUser(userId, userDetails);
         return ResponseEntity.ok(updatedUser);
     }
 
@@ -85,11 +82,8 @@ public class UsersController {
             @ApiResponse(responseCode = "404", description = "User not found")
     })
     @DeleteMapping("/delete/user/{id}")
-    public Map<String, Boolean> deleteUser(@PathVariable(value = "id") Long userId) throws ResourceNotFoundException {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + userId));
-
-        userRepository.delete(user);
+    public Map<String, Boolean> deleteUser(@PathVariable(value = "id") int userId) throws ResourceNotFoundException {
+        userService.deleteUser(userId); 
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return response;
