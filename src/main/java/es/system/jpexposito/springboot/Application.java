@@ -6,7 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -22,13 +23,14 @@ public class Application {
 
 	@PostConstruct
 	private void initDb() {
-		System.out.println(String.format("****** Creating table: %s, and Inserting test data ******", "Employees"));
+		System.out.println(String.format("****** Creating table: %s, and Inserting test data ******", "users"));
 
+		// Cambiar "serial" por "auto_increment" para H2
 		String sqlStatements[] = {
-				"drop table user if exists",
-				"create table user(id serial,name varchar(255))",
-				"insert into user(name) values('Manuel')",
-				"insert into user(name) values('Pedro')"
+				"drop table if exists users",
+				"create table users(id int auto_increment, name varchar(255), primary key (id))",
+				"insert into users(name) values('Manuel')",
+				"insert into users(name) values('Pedro')"
 		};
 
 		Arrays.asList(sqlStatements).stream().forEach(sql -> {
@@ -36,12 +38,12 @@ public class Application {
 			jdbcTemplate.execute(sql);
 		});
 
-		System.out.println(String.format("****** Fetching from table: %s ******", "Users"));
-		jdbcTemplate.query("select id,name from user",
+		System.out.println(String.format("****** Fetching from table: %s ******", "users"));
+		jdbcTemplate.query("select id, name from users",
 				new RowMapper<Object>() {
 					@Override
 					public Object mapRow(ResultSet rs, int i) throws SQLException {
-						System.out.println(String.format("id:%s,name:%s",
+						System.out.println(String.format("id:%s, name:%s",
 								rs.getString("id"),
 								rs.getString("name")));
 						return null;

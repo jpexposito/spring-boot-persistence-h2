@@ -4,15 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import es.system.jpexposito.springboot.exception.ResourceNotFoundException;
 import es.system.jpexposito.springboot.model.User;
 import es.system.jpexposito.springboot.repository.UserRepository;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,68 +23,75 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api
 @RestController
 @RequestMapping("/api/v1")
 public class UsersController {
-	@Autowired
-	private UserRepository userRepository;
 
-	@GetMapping("/user")
-	public List<User> getAllusers() {
-		return userRepository.findAll();
-	}
+    private UserRepository userRepository;
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
 
-	@Operation(summary="Get all users")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "OK"),
-			@ApiResponse(code = 404, message = "Not find") })
-	@GetMapping("/user/{id}")
-	public ResponseEntity<User> getUserById(@PathVariable(value = "id") Long UserId)
-			throws ResourceNotFoundException {
-		User user = userRepository.findById(UserId)
-				.orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + UserId));
-		return ResponseEntity.ok().body(user);
-	}
+    @Operation(summary = "Get all users")
+    @GetMapping("/users/")
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 
-	@Operation(summary="Insert user")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "OK"),
-			@ApiResponse(code = 400, message = "Bad Request. Problem ") })
-	@PostMapping("/add")
-	public User createUser(@Valid @RequestBody User user) {
-		return userRepository.save(user);
-	}
+    @Operation(summary = "Get user by ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
+    @GetMapping("/user/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable(value = "id") Long userId) throws ResourceNotFoundException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + userId));
+        return ResponseEntity.ok().body(user);
+    }
 
-	@Operation(summary="Update user")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "OK"),
-			@ApiResponse(code = 404, message = "Not find") })
-	@PutMapping("/update/{id}")
-	public ResponseEntity<User> updateUser(@PathVariable(value = "id") Long UserId,
-											   @Valid @RequestBody User userDetails) throws ResourceNotFoundException {
-		User user = userRepository.findById(UserId)
-				.orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + UserId));
+    @Operation(summary = "Insert user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User created successfully"),
+            @ApiResponse(responseCode = "400", description = "Bad request")
+    })
+    @PostMapping("/add/user/")
+    public User createUser(@Valid @RequestBody User user) {
+        return userRepository.save(user);
+    }
 
-		user.setName(userDetails.getName());
-		final User updatedUser = userRepository.save(user);
-		return ResponseEntity.ok(updatedUser);
-	}
+    @Operation(summary = "Update user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User updated successfully"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
+    @PutMapping("/update/user/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable(value = "id") Long userId,
+                                           @Valid @RequestBody User userDetails) throws ResourceNotFoundException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + userId));
 
-	@Operation(summary="Delete user")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "OK"),
-			@ApiResponse(code = 404, message = "Not find") })
-	@DeleteMapping("/delete/{id}")
-	public Map<String, Boolean> deleteUser(@PathVariable(value = "id") Long UserId)
-			throws ResourceNotFoundException {
-		User user = userRepository.findById(UserId)
-				.orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + UserId));
+        user.setName(userDetails.getName());
+        final User updatedUser = userRepository.save(user);
+        return ResponseEntity.ok(updatedUser);
+    }
 
-		userRepository.delete(user);
-		Map<String, Boolean> response = new HashMap<>();
-		response.put("deleted", Boolean.TRUE);
-		return response;
-	}
+    @Operation(summary = "Delete user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
+    @DeleteMapping("/delete/user/{id}")
+    public Map<String, Boolean> deleteUser(@PathVariable(value = "id") Long userId) throws ResourceNotFoundException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + userId));
+
+        userRepository.delete(user);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+        return response;
+    }
 }
