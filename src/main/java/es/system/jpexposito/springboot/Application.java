@@ -16,6 +16,7 @@ import java.util.Arrays;
 @SpringBootApplication
 @ImportResource("classpath:cxf-service.xml") 
 public class Application {
+	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 

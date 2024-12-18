@@ -19,8 +19,7 @@ Este proyecto implementa una API RESTful utilizando **Java** y **Spring Boot** p
 
 La aplicación usa la gestión de excepciones mediante la clase `ResourceNotFoundException` para manejar casos donde un usuario no es encontrado. Además, la API está documentada con **Swagger** para facilitar la interacción.
 
-
-- **Rest CRUD de usuarios**
+- **CXF CRUD de usuarios**
   - **Obtener todos los usuario**: `getAllUsers()`
   - **Obtener un usuario por id*: `getUserById()` 
 
