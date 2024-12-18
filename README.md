@@ -10,7 +10,7 @@
 
 Este proyecto implementa una API RESTful utilizando **Java** y **Spring Boot** para gestionar usuarios. El objetivo es permitir la creación, lectura, actualización y eliminación de registros de usuarios, mediante los siguientes endpoints:
 
-- **CRUD de usuarios**
+- **Rest CRUD de usuarios**
   - **Crear usuario**: `POST /api/v1/add/user/`
   - **Leer usuario**: `GET /api/v1/user/{id}`
   - **Leer todos los usuario**: `GET /api/v1/users/`
@@ -19,10 +19,23 @@ Este proyecto implementa una API RESTful utilizando **Java** y **Spring Boot** p
 
 La aplicación usa la gestión de excepciones mediante la clase `ResourceNotFoundException` para manejar casos donde un usuario no es encontrado. Además, la API está documentada con **Swagger** para facilitar la interacción.
 
+
+- **Rest CRUD de usuarios**
+  - **Obtener todos los usuario**: `getAllUsers()`
+  - **Obtener un usuario por id*: `getUserById()` 
+
 Para arrancarlo debemos de ejecutar:
 
 ```console
 mvn clean spring-boot:run
+```
+
+### Arrancar con modo debug activado
+
+Para arrancar spring-boot para debug en remote debemos hacerlo de la siguiente manera
+
+```console
+mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
 ```
 
 ## Documentación OpenAPI (Swagger UI)
