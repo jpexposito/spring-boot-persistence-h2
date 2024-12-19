@@ -10,6 +10,7 @@ import jakarta.jws.WebService;
 
 @WebService(targetNamespace = "springboot.soap.service")
 public interface UserServiceSoapInterface {
+    
     @WebMethod
     @WebResult(
      name="user")
