@@ -10,18 +10,7 @@
 
 Este proyecto implementa una API RESTful utilizando **Java** y **Spring Boot** para gestionar usuarios. El objetivo es permitir la creación, lectura, actualización y eliminación de registros de usuarios, mediante los siguientes endpoints:
 
-- **Rest CRUD de usuarios**
-  - **Crear usuario**: `POST /api/v1/add/user/`
-  - **Leer usuario**: `GET /api/v1/user/{id}`
-  - **Leer todos los usuario**: `GET /api/v1/users/`
-  - **Actualizar usuario**: `PUT /api/v1/update/user/{id}`
-  - **Eliminar usuario**: `DELETE /api/v1/delete/user/{id}`
-
-La aplicación usa la gestión de excepciones mediante la clase `ResourceNotFoundException` para manejar casos donde un usuario no es encontrado. Además, la API está documentada con **Swagger** para facilitar la interacción.
-
-- **CXF CRUD de usuarios**
-  - **Obtener todos los usuario**: `getAllUsers()`
-  - **Obtener un usuario por id*: `getUserById()` 
+## Arranque/parada del servicio
 
 Para arrancarlo debemos de ejecutar:
 
@@ -37,7 +26,110 @@ Para arrancar spring-boot para debug en remote debemos hacerlo de la siguiente m
 mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
 ```
 
-## Documentación OpenAPI (Swagger UI)
+## Gestión de Usuarios
+
+### Rest CRUD
+
+- **Crear usuario**: `POST /api/v1/add/user/`
+- **Leer usuario**: `GET /api/v1/user/{id}`
+- **Leer todos los usuario**: `GET /api/v1/users/`
+- **Actualizar usuario**: `PUT /api/v1/update/user/{id}`
+- **Eliminar usuario**: `DELETE /api/v1/delete/user/{id}`
+
+La aplicación usa la gestión de excepciones mediante la clase `ResourceNotFoundException` para manejar casos donde un usuario no es encontrado. Además, la API está documentada con **Swagger** para facilitar la interacción.
+
+### Servicio Soap (CXF) de usuarios
+
+- **Obtener todos los usuario**: `getAllUsers()`
+- **Obtener un usuario por id**: `getUserById()`
+
+El servicio **soap** quedara expuesto en la url [http://localhost:8080/services/users?wsdl](http://localhost:8080/services/users?wsdl).
+
+- <img src=images/soap_url.png width="400">
+
+Si queremos ver todos los servicios **cxf** expuestos debemos de visitar la siguiente [url](http://localhost:8080/services).
+
+## <img src=images/soapui.png width="40"> Consumo de servicios a través de SoapUi
+
+SOAP UI es una herramienta de pruebas y desarrollo para servicios web que permite probar, inspeccionar y consumir servicios **SOAP** y **RESTful** de manera fácil y efectiva.
+
+### Descarga e instalación de SoapUi
+
+La descarga y la instalación de SoapUi se puede realizar a través del siguiente [enlace](https://www.soapui.org/getting-started/installing-soapui/).
+
+### Crear un proyecto con SoapUi
+
+- **Abrir SOAP UI y seleccionar File** -> ***New SOAP Project*** (para servicios SOAP) o ***New REST Project*** (para servicios REST).
+  
+  <img src=images/soapui_new_proyect.png width="200">
+- Para SOAP: Ingresar la URL del WSDL del servicio y darle un nombre al proyecto.
+- Para REST: Ingresar la URL base del servicio REST y definir el nombre del proyecto.
+- SOAP UI generará automáticamente los métodos disponibles en el servicio, permitiéndote crear y ejecutar peticiones de prueba.
+
+### Consumo de métodos del servicio
+
+Una vez creado el proyecto en soapui para consumir el servicio, podremos obtener los siguientes resultados:
+
+- getAllUsers
+  - Petición
+  
+  ```xml
+  <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:spr="springboot.soap.service">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <spr:getAllUsers/>
+    </soapenv:Body>
+  </soapenv:Envelope>
+  ```
+  - Respuesta
+
+  ```xml
+  <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <ns2:getAllUsersResponse xmlns:ns2="springboot.soap.service">
+          <user>
+              <id>1</id>
+              <name>Manuel</name>
+          </user>
+          <user>
+              <id>2</id>
+              <name>Pedro</name>
+          </user>
+        </ns2:getAllUsersResponse>
+    </soap:Body>
+  </soap:Envelope>
+  ```
+
+- getUserById
+  - Petición
+  
+  ```xml
+  <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:spr="springboot.soap.service">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <spr:getUserById>
+          <userId>1</userId>
+        </spr:getUserById>
+    </soapenv:Body>
+  </soapenv:Envelope>
+  ````
+  
+  - Respuesta
+  
+  ```xml
+  <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <ns2:getUserByIdResponse xmlns:ns2="springboot.soap.service">
+          <return>
+              <id>1</id>
+              <name>Manuel</name>
+          </return>
+        </ns2:getUserByIdResponse>
+    </soap:Body>
+  </soap:Envelope>
+  ```
+
+## Documentación OpenAPI Rest (Swagger UI)
 
 - **URL**: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
