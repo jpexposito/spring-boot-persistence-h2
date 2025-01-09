@@ -1,6 +1,8 @@
 package es.system.jpexposito.springboot.service;
 
 import java.util.List;
+
+import org.apache.cxf.annotations.Logging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +13,9 @@ import es.system.jpexposito.springboot.exception.ResourceNotFoundException;
 import es.system.jpexposito.springboot.model.User;
 import es.system.jpexposito.springboot.repository.UserRepository;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 public class UserService implements UserServiceInterface{
 
@@ -23,6 +27,7 @@ public class UserService implements UserServiceInterface{
     }
 
     public List<User> getAllUsers() {
+        log.info("Realizando la llamada al servicio");
         return userRepository.findAll();
     }
 
