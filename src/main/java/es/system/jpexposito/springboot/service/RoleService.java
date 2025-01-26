@@ -1,33 +1,28 @@
 package es.system.jpexposito.springboot.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import es.system.jpexposito.springboot.exception.ResourceNotFoundException;
 import es.system.jpexposito.springboot.model.Role;
 import es.system.jpexposito.springboot.model.User;
 import es.system.jpexposito.springboot.repository.RoleRepository;
 import es.system.jpexposito.springboot.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
 
 @Slf4j
-@Component
+@Service
 public class RoleService implements RoleServiceInterface {
 
-    private RoleRepository roleRepository;
-
-    private UserRepository userRepository;
-
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final RoleRepository roleRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public RoleService(RoleRepository roleRepository) {
+    public RoleService(RoleRepository roleRepository, UserRepository userRepository) {
         this.roleRepository = roleRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -62,18 +57,17 @@ public class RoleService implements RoleServiceInterface {
     }
 
     @Override
-public void deleteRole(int roleId) throws ResourceNotFoundException {
-    Role role = roleRepository.findById(roleId)
-            .orElseThrow(() -> new ResourceNotFoundException("Role not found with id " + roleId));
+    public void deleteRole(int roleId) throws ResourceNotFoundException {
+        Role role = roleRepository.findById(roleId)
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found with id " + roleId));
 
-    Set<User> usersWithRole = role.getUsers(); 
+        // Eliminar el rol de los usuarios asociados
+        Set<User> usersWithRole = role.getUsers();
+        for (User user : usersWithRole) {
+            user.setRole(null);
+            userRepository.save(user);  // Guardar el usuario actualizado
+        }
 
-    for (User user : usersWithRole) {
-        user.getRoles().remove(role);  
-        userRepository.save(user);  // Guardamos el usuario actualizado
+        roleRepository.delete(role);
     }
-
-    roleRepository.delete(role);  
-}
-
 }

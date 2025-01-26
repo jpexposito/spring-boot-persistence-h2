@@ -2,7 +2,8 @@ package es.system.jpexposito.springboot.model;
 
 import jakarta.persistence.*;
 import java.util.Set;
-import com.fasterxml.jackson.annotation.JsonBackReference;  // Usar para evitar la recursión infinita
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
@@ -13,9 +14,8 @@ public class Role {
     private int id;
     private String name;
     private Set<User> users; // Relación con los usuarios
-    
-    public Role() {
-    }
+
+    public Role() {}
 
     public Role(String name) {
         this.name = name;
@@ -40,8 +40,8 @@ public class Role {
         this.name = name;
     }
 
-    @ManyToMany(mappedBy = "roles") // Relación inversa con User
-    @JsonBackReference  // Usamos @JsonBackReference en el lado "secundario" de la relación
+    @OneToMany(mappedBy = "role",fetch = FetchType.LAZY)
+    @JsonBackReference
     public Set<User> getUsers() {
         return users;
     }

@@ -1,10 +1,9 @@
 package es.system.jpexposito.springboot.model;
 
-import jakarta.persistence.*;
-import java.util.Set;
-import com.fasterxml.jackson.annotation.JsonBackReference;  // Importar para evitar la recursión infinita
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
@@ -14,10 +13,9 @@ public class User {
     private int id;
     private String name;
     private String password; 
-    private Set<Role> roles;
+    private Role role;  
     
-    public User() {
-    }
+    public User() {}
 
     public User(String name, String password) {
         this.name = name;
@@ -52,19 +50,16 @@ public class User {
         this.password = password;
     }
 
-    @ManyToMany(cascade = CascadeType.MERGE) 
-    @JoinTable(
-        name = "user_roles", 
-        joinColumns = @JoinColumn(name = "user_id"), 
-        inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    @JsonManagedReference  // Usamos @JsonManagedReference en el lado "principal"
-    public Set<Role> getRoles() {
-        return roles;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id", nullable = false) 
+	@JsonManagedReference  
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Override
