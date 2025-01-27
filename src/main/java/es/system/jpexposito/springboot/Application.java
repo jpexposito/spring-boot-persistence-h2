@@ -50,11 +50,10 @@ public class Application {
 			"insert into roles(name) values('Admin')",
 			"insert into roles(name) values('User')",
 			
-			// Insertar datos de ejemplo en la tabla users, asignando role_id
-			"insert into users(name, password, role_id) values('Manuel', 'password123', 1)", 
-			"insert into users(name, password, role_id) values('Pedro', 'password456', 2)"
+			// Insertar datos de ejemplo en la tabla users, asignando role_id y contraseñas cifradas
+			"insert into users(name, password, role_id) values('Manuel', '$2a$10$wPLq/XNan3h.oQhzyTji/.0MTweU8dYdJ3bfiz3EEWGTKRaCbpo0G', 1)", 
+			"insert into users(name, password, role_id) values('Pedro', '$2a$10$1mwCpD068vTHawrSh41VlOMFKSXAF23VUFGkVQa2pxdH7wv0PzVBC', 2)" 
 		};
-		
 		Arrays.asList(sqlStatements).stream().forEach(sql -> {
 			System.out.println(sql);
 			jdbcTemplate.execute(sql);

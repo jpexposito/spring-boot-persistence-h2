@@ -66,7 +66,7 @@ public class UserService implements UserServiceInterface {
         
     if (user.getRole() != null) {
         user.setRole(null);
-        userRepository.save(user);  // Guardamos el usuario actualizado
+        userRepository.save(user);  
     }
         userRepository.delete(user);
         log.info("User with id: {} deleted successfully", userId);

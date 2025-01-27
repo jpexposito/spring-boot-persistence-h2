@@ -80,6 +80,7 @@ public class RoleController {
             @ApiResponse(responseCode = "200", description = "Role deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Role not found")
     })
+    
     @DeleteMapping("/delete/role/{id}")
     public Map<String, Boolean> deleteRole(@PathVariable(value = "id") int roleId) throws ResourceNotFoundException {
         roleService.deleteRole(roleId);
@@ -87,4 +88,6 @@ public class RoleController {
         response.put("deleted", Boolean.TRUE);
         return response;
     }
+
+
 }
