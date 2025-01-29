@@ -13,14 +13,16 @@ import java.util.List;
 @RequestMapping("/api/v1")
 @Slf4j
 public class ProductController {
-
+    Product product = new Product("Mi producto", 10l); 
     /**
      * Endpoint para obtener todos los productos (accesible para todos los usuarios autenticados)
      * @return Una lista de productos
      */
     @GetMapping("/products")
     public List<Product> getAllProducts() {
-        return new ArrayList<>();
+        List<Product> products = new ArrayList<>();
+        products.add(product);
+        return products;
     }
 
     /**
@@ -28,19 +30,17 @@ public class ProductController {
      * @param product
      * @return
      */
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/products")
     public Product createProduct(@RequestBody Product product) {
-        return product;
+        return this.product;
     }
 
     /**
-     * Endpoint para actualizar un producto (solo accesible para usuarios con rol 'ADMIN')
+     * Endpoint para actualizar un producto 
      * @param id
      * @param product
      * @return 
      */
-    @PreAuthorize("hasRole('ROL_USER')")
     @PutMapping("/products/{id}")
     public Product updateProduct(@PathVariable("id") int id, @RequestBody Product product) {
         return product;

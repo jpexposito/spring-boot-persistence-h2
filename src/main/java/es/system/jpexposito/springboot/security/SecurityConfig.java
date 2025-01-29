@@ -34,6 +34,7 @@ public class SecurityConfig {
                                 .requestMatchers("/h2-console/**").permitAll()
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                 .requestMatchers("/api/v1/products").hasRole("USER")
+                                .requestMatchers("/api/v1/product").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class) // Registrar el filtro de JWT
