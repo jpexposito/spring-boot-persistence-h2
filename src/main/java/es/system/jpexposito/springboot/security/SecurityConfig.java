@@ -12,7 +12,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 public class SecurityConfig {
@@ -28,22 +27,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Configuración de CORS
-            .csrf().disable() // Deshabilitar CSRF para APIs REST
-            .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/auth/**").permitAll()
-            .requestMatchers("/h2-console/**").permitAll()
-            .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-            //.requestMatchers("/api/v1/products").hasRole("USER")
-            .anyRequest().authenticated()
-        )
-        .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class) // Registrar el filtro de JWT
-        .headers().frameOptions().disable();
-
-
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) 
+                .csrf(csrf -> csrf.disable()) 
+                .authorizeHttpRequests(auth -> auth
+                                .requestMatchers("/auth/**").permitAll()
+                                .requestMatchers("/h2-console/**").permitAll()
+                                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                                .requestMatchers("/api/v1/products").hasRole("USER")
+                                .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class) // Registrar el filtro de JWT
+                .headers(headers -> headers.frameOptions().disable());
+            
         return http.build();
     }
-
+    
     // Configuración de AuthenticationManager
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder, CustomUserDetailsService userDetailsService) throws Exception {

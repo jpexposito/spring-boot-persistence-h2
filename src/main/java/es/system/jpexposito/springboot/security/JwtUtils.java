@@ -33,7 +33,7 @@ public class JwtUtils {
         
         return Jwts.builder()
                 .setSubject(username)
-                .claim("authorities", getRoleNames(autorities))
+                .claim("roles", getRoleNames(autorities))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SECRET_KEY) 
@@ -55,7 +55,7 @@ public class JwtUtils {
                             .build()
                             .parseClaimsJws(token)
                             .getBody();
-        return claims.get("authorities", List.class);  
+        return claims.get("roles", List.class);  
     }
 
     public boolean validateToken(String token) {

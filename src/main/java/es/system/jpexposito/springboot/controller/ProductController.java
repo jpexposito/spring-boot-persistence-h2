@@ -18,10 +18,8 @@ public class ProductController {
      * Endpoint para obtener todos los productos (accesible para todos los usuarios autenticados)
      * @return Una lista de productos
      */
-    @PreAuthorize("hasRole('USER')")
     @GetMapping("/products")
-    public List<Product> getAllProducts(@RequestHeader(value = "Authorization") String authHeader) {
-        log.info("Authorization Header: {}", authHeader);
+    public List<Product> getAllProducts() {
         return new ArrayList<>();
     }
 
@@ -42,7 +40,7 @@ public class ProductController {
      * @param product
      * @return 
      */
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROL_USER')")
     @PutMapping("/products/{id}")
     public Product updateProduct(@PathVariable("id") int id, @RequestBody Product product) {
         return product;

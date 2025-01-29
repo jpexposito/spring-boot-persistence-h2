@@ -47,8 +47,8 @@ public class Application {
 			"create table users (id int auto_increment, name varchar(255), password varchar(255), role_id int, primary key (id), foreign key (role_id) references roles(id))",
 		
 			// Insertar datos de ejemplo en la tabla roles
-			"insert into roles(name) values('Admin')",
-			"insert into roles(name) values('User')",
+			"insert into roles(name) values('ROLE_ADMIN')",
+			"insert into roles(name) values('ROLE_USER')",
 			
 			// Insertar datos de ejemplo en la tabla users, asignando role_id y contraseñas cifradas
 			"insert into users(name, password, role_id) values('Manuel', '$2a$10$wPLq/XNan3h.oQhzyTji/.0MTweU8dYdJ3bfiz3EEWGTKRaCbpo0G', 1)", 
