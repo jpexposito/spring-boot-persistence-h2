@@ -26,7 +26,7 @@ public class ProductController {
     }
 
     /**
-     * Endpoint para crear un producto (solo accesible para usuarios con rol 'ADMIN')
+     * Endpoint para crear un producto 
      * @param product
      * @return
      */
