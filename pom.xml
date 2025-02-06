@@ -63,7 +63,7 @@
 			<artifactId>cxf-spring-boot-starter-jaxws</artifactId>
 			<version>${cxf-spring-boot-starter-jaxws.version}</version> 
 		</dependency>
-
+		
 		<dependency>
 			<groupId>jakarta.xml.bind</groupId>
 			<artifactId>jakarta.xml.bind-api</artifactId>

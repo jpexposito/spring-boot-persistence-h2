@@ -30,7 +30,7 @@ public class ProductController {
      * @param product
      * @return
      */
-    @PostMapping("/products")
+    @PostMapping("/product")
     public Product createProduct(@RequestBody Product product) {
         return this.product;
     }
