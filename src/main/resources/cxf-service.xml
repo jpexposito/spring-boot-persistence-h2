@@ -6,13 +6,20 @@
            http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
            http://cxf.apache.org/jaxws https://cxf.apache.org/schemas/jaxws.xsd">
 
-    <!-- Definición del servicio -->
-    <jaxws:endpoint id="userServiceEndpoint"
-                    implementor="#userServiceImpl"
-                    address="/users">
+    <!-- Definicion del servicio -->
+    <jaxws:endpoint id="productoServiceEndpoint"
+                    implementor="#productServiceSoapImpl"
+                    address="/products">
+        <jaxws:inInterceptors>
+            <ref bean="cxfAuthInterceptor"/>
+        </jaxws:inInterceptors>
+
     </jaxws:endpoint>
 
     <!-- Bean del servicio implementado -->
-    <bean id="userServiceImpl" class="es.system.jpexposito.springboot.soap.service.UserServiceSoapImpl"/>
+    <bean id="productServiceSoapImpl" class="es.system.jpexposito.springboot.soap.service.ProductServiceSoapImpl"/>
+
+    <bean id="cxfAuthInterceptor" class="es.system.jpexposito.springboot.security.interceptor.CxfAuthInterceptor"/>
+
 
 </beans>

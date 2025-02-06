@@ -23,7 +23,7 @@ mvn clean spring-boot:run
 Para arrancar spring-boot para debug en remote debemos hacerlo de la siguiente manera
 
 ```console
-mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
+mvn clean spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
 ```
 
 ## Gestión de Usuarios

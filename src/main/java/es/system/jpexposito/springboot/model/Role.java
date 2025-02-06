@@ -13,7 +13,7 @@ public class Role {
 
     private int id;
     private String name;
-    private Set<User> users; // Relación con los usuarios
+    private Set<User> users; 
 
     public Role() {}
 

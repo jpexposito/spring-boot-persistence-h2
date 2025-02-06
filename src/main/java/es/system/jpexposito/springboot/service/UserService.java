@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -24,42 +25,55 @@ public class UserService implements UserServiceInterface {
         this.userRepository = userRepository;
     }
 
-    // Obtener todos los usuarios
+    /**
+     * Obtener todos los usuarios
+     */
+    @Transactional
     public List<User> getAllUsers() {
         log.info("Fetching all users");
         return userRepository.findAll();
     }
 
-    // Obtener un usuario por ID
+    /**
+     * Obtener un usuario por ID
+     */
+    @Transactional
     public User getUserById(@PathVariable(value = "id") int userId) throws ResourceNotFoundException {
         log.info("Fetching user with id: {}", userId);
         return userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + userId));
     }
 
-    // Crear un nuevo usuario
+    /**
+     * Crear un nuevo usuario
+     */
+    @Transactional
     public User createUser(@Valid @RequestBody User user) {
         log.info("Creating new user with name: {}", user.getName());
         return userRepository.save(user);
     }
 
-    // Actualizar un usuario existente
+    /**
+     * Actualizar un usuario existente
+     */
+    @Transactional
     public User updateUser(@PathVariable(value = "id") int userId,
                            @Valid @RequestBody User userDetails) throws ResourceNotFoundException {
         log.info("Updating user with id: {}", userId);
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + userId));
 
-        // Actualizamos los detalles del usuario
         user.setName(userDetails.getName());
-        // Aquí puedes agregar más campos si es necesario
         return userRepository.save(user);
     }
 
+    /**
+     * Funcion que permite eliminar un usuario por id
+     */
+    @Transactional
     public void deleteUser(@PathVariable(value = "id") int userId) throws ResourceNotFoundException {
         log.info("Deleting user with id: {}", userId);
     
-        // Obtener el usuario a eliminar
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + userId));
     

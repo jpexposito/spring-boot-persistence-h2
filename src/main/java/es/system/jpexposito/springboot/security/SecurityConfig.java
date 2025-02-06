@@ -23,7 +23,12 @@ public class SecurityConfig {
         this.jwtAuthorizationFilter = jwtAuthorizationFilter;
     }
 
-    // Filtro de seguridad principal
+    /**
+     * Filtro de seguridad principal
+     * @param http
+     * @return
+     * @throws Exception
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -35,15 +40,23 @@ public class SecurityConfig {
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                 .requestMatchers("/api/v1/products").hasRole("USER")
                                 .requestMatchers("/api/v1/product").hasRole("ADMIN")
+                                .requestMatchers("/services/**").permitAll()
                                 .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class) // Registrar el filtro de JWT
+                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class) 
                 .headers(headers -> headers.frameOptions().disable());
             
         return http.build();
     }
     
-    // Configuración de AuthenticationManager
+    /**
+     * Configuración de AuthenticationManager
+     * @param http
+     * @param passwordEncoder
+     * @param userDetailsService
+     * @return
+     * @throws Exception
+     */
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder, CustomUserDetailsService userDetailsService) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
